@@ -9,6 +9,7 @@ function DoctorManagement() {
   const [formData, setFormData] = useState({ name: "", specialization: "" });
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
+  const [isAdding, setIsAdding] = useState(false); // New state for add button loading
 
   useEffect(() => {
     fetchDoctors();
@@ -28,6 +29,7 @@ function DoctorManagement() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsAdding(true); // Set loading state when submitting
     try {
       const { data } = await axiosInstance.post("api/hospital/doctors", formData);
       setDoctors([...doctors, data]);
@@ -36,6 +38,8 @@ function DoctorManagement() {
       setFormData({ name: "", specialization: "" });
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to add doctor");
+    } finally {
+      setIsAdding(false); // Reset loading state when done
     }
   };
 
@@ -155,6 +159,7 @@ function DoctorManagement() {
               <button 
                 onClick={() => setShowModal(false)}
                 className="text-white hover:text-teal-200 transition-colors"
+                disabled={isAdding}
               >
                 <X className="h-6 w-6" />
               </button>
@@ -169,6 +174,7 @@ function DoctorManagement() {
                   className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                   placeholder="Enter doctor's name"
                   required
+                  disabled={isAdding}
                 />
               </div>
               <div>
@@ -182,6 +188,7 @@ function DoctorManagement() {
                   className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                   placeholder="e.g. Cardiology, Pediatrics"
                   required
+                  disabled={isAdding}
                 />
               </div>
               <div className="flex justify-end space-x-3 pt-4">
@@ -189,14 +196,23 @@ function DoctorManagement() {
                   type="button"
                   onClick={() => setShowModal(false)}
                   className="px-5 py-3 rounded-lg bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition"
+                  disabled={isAdding}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-3 rounded-lg bg-teal-600 text-white font-medium hover:bg-teal-700 transition shadow"
+                  className="px-5 py-3 rounded-lg bg-teal-600 text-white font-medium hover:bg-teal-700 transition shadow flex items-center justify-center min-w-[120px]"
+                  disabled={isAdding}
                 >
-                  Save Doctor
+                  {isAdding ? (
+                    <>
+                      <Loader className="h-5 w-5 mr-2 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    "Save Doctor"
+                  )}
                 </button>
               </div>
             </form>
