@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import axiosInstance from "../api/axiosInstance.js";
 import { BadgeCheck, UserCircle } from "lucide-react";
 
-const socket = io("https://nomotiwa-backend.onrender.com/");
+const socket = io("https://api.trovup.online/");
 
 function User() {
   const [doctorTokens, setDoctorTokens] = useState({});

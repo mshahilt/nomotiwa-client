@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: 'https://nomotiwa-backend.onrender.com/',
+    baseURL: 'https://api.trovup.online/',
     headers: {
         'Content-Type' : 'application/json'
     }
