@@ -27,8 +27,9 @@ const TokenDisplay = () => {
   }, []);
 
   useEffect(() => {
-    // Show modal when a doctor is selected
+    // Show modal when a doctor is selected and reset token
     if (selectedDoctor) {
+      setToken(null); // Reset token when new doctor is selected
       setShowModal(true);
     }
   }, [selectedDoctor]);
@@ -59,6 +60,9 @@ const TokenDisplay = () => {
 
   const closeModal = () => {
     setShowModal(false);
+    // Optional: Uncomment the line below if you want to reset both token and selected doctor when closing modal
+    // setSelectedDoctor(null);
+    setToken(null); // Reset token when closing modal
   };
 
   return (
@@ -114,7 +118,6 @@ const TokenDisplay = () => {
       {showModal && selectedDoctorData && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full overflow-hidden animate-fadeIn">
-            {/* Modal Header */}
             <div className="bg-teal-600 p-4 flex items-center justify-between">
               <h3 className="text-xl font-bold text-white">Doctor Details</h3>
               <button 
@@ -125,7 +128,6 @@ const TokenDisplay = () => {
               </button>
             </div>
             
-            {/* Modal Body */}
             <div className="p-6">
               <div className="flex items-center mb-6">
                 <div className="bg-teal-100 p-4 rounded-full mr-4">
@@ -144,7 +146,6 @@ const TokenDisplay = () => {
                 </div>
               </div>
               
-              {/* Token Display */}
               {token && (
                 <div className="mb-6 flex flex-col items-center justify-center">
                   <div className="inline-flex items-center justify-center bg-teal-600 text-white text-3xl font-bold rounded-full w-24 h-24 mb-2">
@@ -154,7 +155,6 @@ const TokenDisplay = () => {
                 </div>
               )}
               
-              {/* Increment Button */}
               <button
                 onClick={incrementToken}
                 disabled={loading}
@@ -174,7 +174,6 @@ const TokenDisplay = () => {
         </div>
       )}
 
-      {/* Token section remains as a fallback and for displaying current token when modal is closed */}
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Token Management</h2>
         
